@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+
+  "name": "PartyVJ",
+  "description": "Extension to move chrome tabs to secondary screen and control youtube volume",
+  "version": "1.0",
+
+  "browser_action": {
+	"default_title": "Switch Now!!",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "https://ajax.googleapis.com/",
+	"https://www.youtube.com/*",
+	"tabs"
+  ],
+  "content_scripts": [
+    {
+        "matches": ["https://www.youtube.com/*"],
+        "js": ["scripts/jquery-3.1.0.min.js",  "scripts/contentscript.js"]
+    }
+  ]
+}
