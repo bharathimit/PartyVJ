@@ -3,19 +3,30 @@ var party_vj_you_tube_url = "www.youtube.com";
 function handleTabs(callback) {
 	chrome.tabs.query({currentWindow: true, active : true},function(tabArray){
 		var currentWindow = tabArray[0];
-		chrome.tabs.query({}, function(tabs) {
-			document.getElementById('status').textContent = tabs.length;
-			for(var i=0; i < tabs.length; i++){
-				var tab = tabs[i];
-				var url = getDomainName(tab.url);
-				console.assert(typeof url == 'string', 'tab.url should be a string');
-				if(url == party_vj_you_tube_url){
-					pausePlay(tab, currentWindow);
-				}
-				//callback(tab.url);
+		chrome.windows.getAll({}, function(windows){
+			for(var i=0; i<windows.length; i++){
+				chrome.windows.update(windows[i].id, {"left":0, "top":0});
 			}
-			window.close();
-		});
+			chrome.tabs.query({}, function(tabs) {
+				chrome.windows.getCurrent(function(window){
+					chrome.windows.update(window.id, {"left":1500, "top":0});
+				});
+				document.getElementById('status').textContent = tabs.length;
+				for(var i=0; i < tabs.length; i++){
+					var tab = tabs[i];
+					var url = getDomainName(tab.url);
+					console.assert(typeof url == 'string', 'tab.url should be a string');
+					if(url == party_vj_you_tube_url){
+						pausePlay(tab, currentWindow);
+					}
+					//callback(tab.url);
+				}
+				window.close();
+			
+			//callback(currentWindow.url);
+			});
+		})
+			
 		}
 	);
 }
